@@ -6,31 +6,86 @@ import java.util.Scanner;
 
 public class Main {
     static Scanner scanner = new Scanner(System.in);
-    static List<Person> personList = new ArrayList<>();
+    static List<Record> recordList = new ArrayList<>();
+
 
     public static void main(String[] args) {
+        int i;
+        for (i = 1; i < 11; i++) {
+            Person p = new Person();
+            p.setName("Maks" + i);
+            p.setSurname("Surname" + i);
+            p.setPhone("121211" + i);
+            p.setEmail("mail" + i + "@gmail.com");
+
+            recordList.add(p);
+        }
+        for (i = 1; i < 3; i++) {
+            Note n = new Note();
+            n.setSubject("Maks" + i);
+            n.setText("Text dfdfdsfsdfdsdsfddsfsdfdsf" + i);
+            recordList.add(n);
+        }
         while (true) {
-            System.out.println("Enter command ('help' for help):");
+            System.out.println();
+            System.out.println("Commands:");
+            System.out.println("11: New Contact");
+            System.out.println("21: New Note");
+            System.out.println("2: Show List, 3: Remove, 4: Find");
+            System.out.println("'help' for help), 0: Exit");
             String cmd = scanner.next();
             switch (cmd) {
-                case "create":
-                    create();
+                case "11":
+                    createContact();
                     break;
-                case "list":
-                    printList();
+                case "21":
+                    createNote();
                     break;
-                case "remove":
+                case "2":
+                    printListContact();
+                    break;
+                case "3":
                     removeById();
+                    break;
+                case "4":
+                    find();
                     break;
                 case "help":
                     showHelp();
                     break;
-                case "exit":
+                case "0":
                     return;
                 default:
                     System.out.println("It isn't a command");
             }
         }
+    }
+
+    private static void find() {
+        System.out.println("Find What?:");
+        String str = askString();
+        for (Record r : recordList) {
+            if (r.hasSubstring(str)) {
+                System.out.println(r);
+            }
+        }
+    }
+
+
+    private static void createNote() {
+        System.out.println("Enter Subject:");
+        String subject = askString();
+
+        System.out.println("Enter Notes:");
+        String text = askString();
+
+        Note n = new Note();
+        n.setSubject(subject);
+        n.setText(text);
+
+        recordList.add(n);
+
+        System.out.println(n);
     }
 
     private static void showHelp() {
@@ -43,33 +98,22 @@ public class Main {
     private static void removeById() {
         System.out.println("Enter ID to remove:");
         int id = scanner.nextInt();
-        for (int i = 0; i < personList.size(); i++) {
-            Person p = personList.get(i);
+        for (int i = 0; i < recordList.size(); i++) {
+            Record p = recordList.get(i);
             if (id == p.getId()) {
-                personList.remove(i);
+                recordList.remove(i);
                 break;
             }
         }
     }
 
-//    private static void removeById() {
-//        System.out.println("Enter ID to remove:");
-//        int id = scanner.nextInt();
-//        for (Person p : personList) {
-//            if (id == p.getId()) {
-//                personList.remove(p); // not very optimal
-//                break;
-//            }
-//        }
-//    }
-
-    private static void printList() {
-        for (Person p : personList) {
+    private static void printListContact() {
+        for (Record p : recordList) {
             System.out.println(p);
         }
     }
 
-    private static void create() {
+    private static void createContact() {
         System.out.println("Enter name:");
         String name = askString();
 
@@ -88,7 +132,7 @@ public class Main {
         p.setPhone(phone);
         p.setEmail(email);
 
-        personList.add(p);
+        recordList.add(p);
 
         System.out.println(p);
     }
@@ -101,11 +145,11 @@ public class Main {
             do {
                 result.add(word);
                 if (word.endsWith("\"")) {
-                    String str = String.join(" ", result);
-                    return str.substring(1, str.length()-1);
+                    String str = String.join("_", result);
+                    return str.substring(1, str.length() - 1);
                 }
                 word = scanner.next();
-            } while(true);
+            } while (true);
 
         } else {
             return word;
