@@ -5,6 +5,22 @@ public class Person extends Record{
     private String name;
     private String surname;
     private String phone;
+
+    @Override
+    public void askQuestions() {
+        System.out.println("Enter name:");
+        name = Main.askString();
+
+        System.out.println("Enter surname:");
+        surname = Main.askString();
+
+        System.out.println("Enter phone:");
+        phone = Main.askString();
+
+        System.out.println("Enter email:");
+        email = Main.askString();
+    }
+
     private String email;
 
 

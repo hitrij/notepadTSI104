@@ -1,10 +1,19 @@
 package notepad;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+    public final static String DATE_FORMAT = "dd/MM/yyyy";
+    public final static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT);
+
+    public final static String TIME_FORMAT = "HH/mm";
+    public final static DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern(TIME_FORMAT);
+
     static Scanner scanner = new Scanner(System.in);
     static List<Record> recordList = new ArrayList<>();
 
@@ -26,11 +35,25 @@ public class Main {
             n.setText("Text dfdfdsfsdfdsdsfddsfsdfdsf" + i);
             recordList.add(n);
         }
+
+        for (i = 1; i < 5; i++) {
+            Reminder n = new Reminder();
+            n.setText("sdadsdad" + i + i + i + "dsfsdfs");
+
+            LocalDate dt = LocalDate.parse("0" + i + "/0" + i + "/201" + i, DATE_FORMATTER);
+            n.setDate(dt);
+
+            LocalTime tm = LocalTime.parse("0" +i+"/0" + i, TIME_FORMATTER);
+            n.setTime(tm);
+
+            recordList.add(n);
+        }
         while (true) {
             System.out.println();
             System.out.println("Commands:");
             System.out.println("11: New Contact");
-            System.out.println("21: New Note");
+            System.out.println("12: New Note");
+            System.out.println("13: New Reminder");
             System.out.println("2: Show List, 3: Remove, 4: Find");
             System.out.println("'help' for help), 0: Exit");
             String cmd = scanner.next();
@@ -38,8 +61,11 @@ public class Main {
                 case "11":
                     createContact();
                     break;
-                case "21":
+                case "12":
                     createNote();
+                    break;
+                case "13":
+                    createReminder();
                     break;
                 case "2":
                     printListContact();
@@ -61,6 +87,11 @@ public class Main {
         }
     }
 
+    private static void createReminder() {
+        var p = new Reminder();
+        addRecord(p);
+    }
+
     private static void find() {
         System.out.println("Find What?:");
         String str = askString();
@@ -73,19 +104,8 @@ public class Main {
 
 
     private static void createNote() {
-        System.out.println("Enter Subject:");
-        String subject = askString();
-
-        System.out.println("Enter Notes:");
-        String text = askString();
-
-        Note n = new Note();
-        n.setSubject(subject);
-        n.setText(text);
-
-        recordList.add(n);
-
-        System.out.println(n);
+        Note p = new Note();
+        addRecord(p);
     }
 
     private static void showHelp() {
@@ -114,30 +134,17 @@ public class Main {
     }
 
     private static void createContact() {
-        System.out.println("Enter name:");
-        String name = askString();
-
-        System.out.println("Enter surname:");
-        String surname = askString();
-
-        System.out.println("Enter phone:");
-        String phone = askString();
-
-        System.out.println("Enter email:");
-        String email = askString();
-
         Person p = new Person();
-        p.setName(name);
-        p.setSurname(surname);
-        p.setPhone(phone);
-        p.setEmail(email);
+        addRecord(p);
+    }
 
+    private static void addRecord(Record p) {
+        p.askQuestions();
         recordList.add(p);
-
         System.out.println(p);
     }
 
-    private static String askString() {
+    public static String askString() {
         var result = new ArrayList<String>();
         var word = scanner.next();
         if (word.startsWith("\"")) {
@@ -155,5 +162,16 @@ public class Main {
             return word;
         }
 
+    }
+
+    public static LocalDate askDate() {
+        String d = askString();
+        LocalDate date = LocalDate.parse(d, DATE_FORMATTER);
+        return date;
+    }
+    public static LocalTime askTime() {
+        String t = askString();
+        LocalTime time = LocalTime.parse(t, TIME_FORMATTER);
+        return time;
     }
 }

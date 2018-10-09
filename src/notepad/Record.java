@@ -2,7 +2,7 @@ package notepad;
 
 public abstract class Record {
 
-    public static  int count = 0;
+    public static int count = 0;
 
     private int id;
 
@@ -10,7 +10,11 @@ public abstract class Record {
         count++;
         id = count;
     }
-public  abstract boolean hasSubstring(String str);
+
+    public abstract boolean hasSubstring(String str);
+
+    public abstract void askQuestions();
+
 
     public int getId() {
         return id;

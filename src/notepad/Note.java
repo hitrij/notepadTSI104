@@ -34,5 +34,14 @@ public class Note extends Record {
     public boolean hasSubstring(String str) {
         return subject.contains(str) || text.contains(str);
     }
+
+    @Override
+    public void askQuestions() {
+        System.out.println("Enter Subject for Note or Text for Reminder:");
+        subject = Main.askString();
+
+        System.out.println("Enter Text for Note or Date for Reminder:");
+        text = Main.askString();
+    }
 }
 
