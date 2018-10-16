@@ -3,9 +3,7 @@ package notepad;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public final static String DATE_FORMAT = "dd/MM/yyyy";
@@ -15,7 +13,7 @@ public class Main {
     public final static DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern(TIME_FORMAT);
 
     static Scanner scanner = new Scanner(System.in);
-    static List<Record> recordList = new ArrayList<>();
+    static Map<Integer, Record> recordList = new LinkedHashMap<>();
 
 
     public static void main(String[] args) {
@@ -27,13 +25,13 @@ public class Main {
             p.setPhone("121211" + i);
             p.setEmail("mail" + i + "@gmail.com");
 
-            recordList.add(p);
+            recordList.put(p.getId(), p);
         }
         for (i = 1; i < 3; i++) {
             Note n = new Note();
             n.setSubject("Maks" + i);
             n.setText("Text dfdfdsfsdfdsdsfddsfsdfdsf" + i);
-            recordList.add(n);
+            recordList.put(n.getId(), n);
         }
 
         for (i = 1; i < 5; i++) {
@@ -43,10 +41,10 @@ public class Main {
             LocalDate dt = LocalDate.parse("0" + i + "/0" + i + "/201" + i, DATE_FORMATTER);
             n.setDate(dt);
 
-            LocalTime tm = LocalTime.parse("0" +i+"/0" + i, TIME_FORMATTER);
+            LocalTime tm = LocalTime.parse("0" + i + "/0" + i, TIME_FORMATTER);
             n.setTime(tm);
 
-            recordList.add(n);
+            recordList.put(n.getId(), n);
         }
         while (true) {
             System.out.println();
@@ -54,8 +52,13 @@ public class Main {
             System.out.println("11: New Contact");
             System.out.println("12: New Note");
             System.out.println("13: New Reminder");
-            System.out.println("2: Show List, 3: Remove, 4: Find");
-            System.out.println("'help' for help), 0: Exit");
+            System.out.println("14: New Alarm");
+
+            System.out.println("21: Show List");
+            System.out.println("22: Show ID:");
+            System.out.println("3: Remove, 4: Find");
+            System.out.println("5: Show Expired Events");
+            System.out.println("'help' for help, 0: Exit");
             String cmd = scanner.next();
             switch (cmd) {
                 case "11":
@@ -67,14 +70,23 @@ public class Main {
                 case "13":
                     createReminder();
                     break;
-                case "2":
+                case "14":
+                    createAlarm();
+                    break;
+                case "21":
                     printListContact();
+                    break;
+                case "22":
+                    printID();
                     break;
                 case "3":
                     removeById();
                     break;
                 case "4":
                     find();
+                    break;
+                case "5":
+                    showExpired();
                     break;
                 case "help":
                     showHelp();
@@ -87,6 +99,28 @@ public class Main {
         }
     }
 
+    private static void showExpired() {
+        for (Record r : recordList.values()) {
+            if (r instanceof Expirible) {
+                Expirible e = (Expirible) r;
+                if (e.isExpired()) {
+                    System.out.println(r);
+                }
+            }
+        }
+    }
+
+    private static void createAlarm() {
+        var alarm = new Alarm();
+        addRecord(alarm);
+    }
+
+    private static void printID() {
+        System.out.println("Which ID to show?");
+        Integer str = scanner.nextInt();
+        System.out.println(recordList.get(str));
+    }
+
     private static void createReminder() {
         var p = new Reminder();
         addRecord(p);
@@ -95,7 +129,7 @@ public class Main {
     private static void find() {
         System.out.println("Find What?:");
         String str = askString();
-        for (Record r : recordList) {
+        for (Record r : recordList.values()) {
             if (r.hasSubstring(str)) {
                 System.out.println(r);
             }
@@ -118,17 +152,11 @@ public class Main {
     private static void removeById() {
         System.out.println("Enter ID to remove:");
         int id = scanner.nextInt();
-        for (int i = 0; i < recordList.size(); i++) {
-            Record p = recordList.get(i);
-            if (id == p.getId()) {
-                recordList.remove(i);
-                break;
-            }
-        }
+        recordList.remove(id);
     }
 
     private static void printListContact() {
-        for (Record p : recordList) {
+        for (Record p : recordList.values()) {
             System.out.println(p);
         }
     }
@@ -140,7 +168,7 @@ public class Main {
 
     private static void addRecord(Record p) {
         p.askQuestions();
-        recordList.add(p);
+        recordList.put(p.getId(), p);
         System.out.println(p);
     }
 
@@ -169,6 +197,7 @@ public class Main {
         LocalDate date = LocalDate.parse(d, DATE_FORMATTER);
         return date;
     }
+
     public static LocalTime askTime() {
         String t = askString();
         LocalTime time = LocalTime.parse(t, TIME_FORMATTER);

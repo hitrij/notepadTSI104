@@ -37,10 +37,10 @@ public class Note extends Record {
 
     @Override
     public void askQuestions() {
-        System.out.println("Enter Subject for Note or Text for Reminder:");
+        System.out.println("Enter Subject for Note and Alarm or Text for Reminder:");
         subject = Main.askString();
 
-        System.out.println("Enter Text for Note or Date for Reminder:");
+        System.out.println("Enter Text for Note and Alarm or Date for Reminder:");
         text = Main.askString();
     }
 }
