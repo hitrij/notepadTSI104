@@ -41,7 +41,8 @@ public class Reminder extends Alarm implements Expirible{
     public String toString() {
         return "Reminder{" +
                 "id=" + getId() + ", " +
-                "text='" + getText() + '\'' +
+                "subject='" + getSubject() + '\'' +
+                ", text='" + getText() + '\'' +
                 ", date='" + date.format(Main.DATE_FORMATTER) + '\'' +
                 ", time='" + getTime().format(Main.TIME_FORMATTER) + '\'' +
                 '}';

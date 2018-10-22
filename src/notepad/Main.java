@@ -9,7 +9,7 @@ public class Main {
     public final static String DATE_FORMAT = "dd/MM/yyyy";
     public final static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT);
 
-    public final static String TIME_FORMAT = "HH/mm";
+    public final static String TIME_FORMAT = "HH:mm";
     public final static DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern(TIME_FORMAT);
 
     static Scanner scanner = new Scanner(System.in);
@@ -27,25 +27,38 @@ public class Main {
 
             recordList.put(p.getId(), p);
         }
-        for (i = 1; i < 3; i++) {
+        for (i = 1; i < 4; i++) {
             Note n = new Note();
             n.setSubject("Maks" + i);
             n.setText("Text dfdfdsfsdfdsdsfddsfsdfdsf" + i);
             recordList.put(n.getId(), n);
         }
 
-        for (i = 1; i < 5; i++) {
-            Reminder n = new Reminder();
-            n.setText("sdadsdad" + i + i + i + "dsfsdfs");
+        for (i = 1; i < 4; i++) {
+            Alarm n = new Alarm();
+            n.setSubject("Subject_" + i);
+            n.setText("Text_" + i);
 
-            LocalDate dt = LocalDate.parse("0" + i + "/0" + i + "/201" + i, DATE_FORMATTER);
-            n.setDate(dt);
-
-            LocalTime tm = LocalTime.parse("0" + i + "/0" + i, TIME_FORMATTER);
+            LocalTime tm = LocalTime.parse("0" + i + ":0" + i, TIME_FORMATTER);
             n.setTime(tm);
 
             recordList.put(n.getId(), n);
         }
+
+        for (i = 10; i < 13; i++) {
+            Reminder n = new Reminder();
+            n.setSubject("subject00" + i);
+            n.setText("text________" + i);
+
+            LocalDate dt = LocalDate.parse(i + "/" + i + "/2018", DATE_FORMATTER);
+            n.setDate(dt);
+
+            LocalTime tm = LocalTime.parse(i + ":" + i, TIME_FORMATTER);
+            n.setTime(tm);
+
+            recordList.put(n.getId(), n);
+        }
+
         while (true) {
             System.out.println();
             System.out.println("Commands:");
@@ -166,7 +179,8 @@ public class Main {
         addRecord(p);
     }
 
-    private static void addRecord(Record p) {
+    private static void
+    addRecord(Record p) {
         p.askQuestions();
         recordList.put(p.getId(), p);
         System.out.println(p);

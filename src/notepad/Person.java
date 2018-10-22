@@ -5,6 +5,7 @@ public class Person extends Record{
     private String name;
     private String surname;
     private String phone;
+    private String email;
 
     @Override
     public void askQuestions() {
@@ -20,9 +21,6 @@ public class Person extends Record{
         System.out.println("Enter email:");
         email = Main.askString();
     }
-
-    private String email;
-
 
     public String getName() {
         return name;

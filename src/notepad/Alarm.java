@@ -29,8 +29,9 @@ public class Alarm extends Note implements Expirible {
     @Override
     public String toString() {
         return "Alarm{" +
-                "id=" + getId() + ", " +
-                "text='" + getText() + '\'' +
+                "id=" + getId() +
+                ", subject='" + getSubject() + '\'' +
+                ", text='" + getText() + '\'' +
                 ", time='" + time.format(Main.TIME_FORMATTER) + '\'' +
                 '}';
     }
